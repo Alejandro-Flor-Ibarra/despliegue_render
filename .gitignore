@@ -1,0 +1,17 @@
+# Entornos virtuales
+.venv/
+venv/
+entornoOCTUBRE/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django y datos locales
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Secretos
+.env
