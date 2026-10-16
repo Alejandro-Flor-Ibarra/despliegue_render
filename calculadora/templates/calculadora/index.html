@@ -7,7 +7,65 @@
 </head>
 <body>
 
-    <h1>Aqi va el cálculo</h1>
+    <h1>Calculadora Virtual</h1>
+
+    <!-- Pantalla de entrada y salida -->
+    <input type="text" id="pantalla" readonly value="0">
+    <br><br>
+
+    <!-- Botones de control y operaciones principales -->
+    <button onclick="limpiar()">C</button>
+    <button onclick="presionar('/')">/</button>
+    <button onclick="presionar('*')">*</button>
+    <button onclick="presionar('-')">-</button>
+    <br><br>
+
+    <!-- Filas del teclado numérico -->
+    <button onclick="presionar('7')">7</button>
+    <button onclick="presionar('8')">8</button>
+    <button onclick="presionar('9')">9</button>
+    <button onclick="presionar('+')">+</button>
+    <br><br>
+
+    <button onclick="presionar('4')">4</button>
+    <button onclick="presionar('5')">5</button>
+    <button onclick="presionar('6')">6</button>
+    <br><br>
+
+    <button onclick="presionar('1')">1</button>
+    <button onclick="presionar('2')">2</button>
+    <button onclick="presionar('3')">3</button>
+    <br><br>
+
+    <button onclick="presionar('0')">0</button>
+    <button onclick="presionar('.')">.</button>
+    <button onclick="calcular()">=</button>
+
+    <!-- Lógica de funcionamiento en JavaScript -->
+    <script>
+        const pantalla = document.getElementById('pantalla');
+
+        function presionar(valor) {
+            if (pantalla.value === '0' && !isNaN(valor)) {
+                pantalla.value = valor;
+            } else {
+                pantalla.value += valor;
+            }
+        }
+
+        function limpiar() {
+            pantalla.value = '0';
+        }
+
+        function calcular() {
+            try {
+                // Se evalúa la expresión de manera segura usando la API nativa de JavaScript
+                pantalla.value = Function('"use strict";return (' + pantalla.value + ')')();
+            } catch (error) {
+                pantalla.value = 'Error';
+            }
+        }
+    </script>
 
 </body>
 </html>
