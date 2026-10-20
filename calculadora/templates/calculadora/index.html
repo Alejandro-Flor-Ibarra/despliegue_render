@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Inicio</title>
+    <title>Calculadora Virtual</title>
 </head>
 <body>
 
     <h1>Calculadora Virtual</h1>
 
-    <!-- Pantalla de entrada y salida -->
     <input type="text" id="pantalla" readonly value="0">
     <br><br>
 
-    <!-- Botones de control y operaciones principales -->
     <button onclick="limpiar()">C</button>
     <button onclick="presionar('/')">/</button>
     <button onclick="presionar('*')">*</button>
     <button onclick="presionar('-')">-</button>
     <br><br>
 
-    <!-- Filas del teclado numérico -->
     <button onclick="presionar('7')">7</button>
     <button onclick="presionar('8')">8</button>
     <button onclick="presionar('9')">9</button>
@@ -41,7 +38,30 @@
     <button onclick="presionar('.')">.</button>
     <button onclick="calcular()">=</button>
 
-    <!-- Lógica de funcionamiento en JavaScript -->
+    <h2>Historial</h2>
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Fecha y hora</th>
+                <th>Operación</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
+        <tbody id="historial-body">
+            {% for r in historial %}
+            <tr>
+                <td>{{ r.fecha|date:"d/m/Y H:i:s" }}</td>
+                <td>{{ r.operacion }}</td>
+                <td>{{ r.resultado|floatformat:"-4" }}</td>
+            </tr>
+            {% empty %}
+            <tr id="sin-datos">
+                <td colspan="3">Aún no hay cálculos</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     <script>
         const pantalla = document.getElementById('pantalla');
 
@@ -58,12 +78,47 @@
         }
 
         function calcular() {
+            const operacion = pantalla.value;
             try {
-                // Se evalúa la expresión de manera segura usando la API nativa de JavaScript
-                pantalla.value = Function('"use strict";return (' + pantalla.value + ')')();
+                const resultado = Function('"use strict";return (' + operacion + ')')();
+                pantalla.value = resultado;
+                // Solo guarda si es un número válido y realmente hubo una operación
+                if (Number.isFinite(resultado) && operacion !== String(resultado)) {
+                    guardar(operacion, resultado);
+                }
             } catch (error) {
                 pantalla.value = 'Error';
             }
+        }
+
+        async function guardar(operacion, resultado) {
+            try {
+                const respuesta = await fetch('{% url "guardar" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ operacion: operacion, resultado: resultado })
+                });
+                const datos = await respuesta.json();
+                if (datos.ok) {
+                    agregarFila(datos);
+                }
+            } catch (error) {
+                console.error('No se pudo guardar el resultado:', error);
+            }
+        }
+
+        function agregarFila(datos) {
+            const sinDatos = document.getElementById('sin-datos');
+            if (sinDatos) sinDatos.remove();
+
+            const tbody = document.getElementById('historial-body');
+            const fila = tbody.insertRow(0);
+            fila.insertCell().textContent = datos.fecha;
+            fila.insertCell().textContent = datos.operacion;
+            fila.insertCell().textContent = datos.resultado;
         }
     </script>
 
