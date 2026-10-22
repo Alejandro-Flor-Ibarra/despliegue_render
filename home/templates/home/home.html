@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Inicio</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Bienvenido a la página de inicio</h1>
-    <a href="{% url 'index' %}" class="boton-calculadora">Ir a la calculadora</a>
+{% block title %}Inicio{% endblock %}
 
-
-</body>
-</html>
+{% block content %}
+<section class="welcome" aria-labelledby="welcome-title">
+    <p class="welcome__eyebrow">Tu espacio de cálculo</p>
+    <h1 id="welcome-title">Bienvenido a la página de Alejandro Flor</h1>
+    <p class="welcome__intro">
+        Esta es la página de Alejandro Flor, un programador y diseñador gráfico que se especializa en la creación de sitios web y aplicaciones web.
+        Este sitio se construye para practicar la programación web y aprender sobre el desarrollo web.
+    </p>
+    <a class="button button--primary" href="{% url 'index' %}">
+        Abrir calculadora
+    </a>
+</section>
+{% endblock %}

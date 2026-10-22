@@ -1,0 +1,34 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Calculadora{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="site-header">
+        {% include "includes/navbar.html" %}
+    </header>
+
+    <div class="site-layout">
+        <aside class="site-sidebar" aria-label="Navegación secundaria">
+            {% include "includes/sidebar.html" %}
+        </aside>
+
+        <main id="contenido" class="site-main">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        {% include "includes/footer.html" %}
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
