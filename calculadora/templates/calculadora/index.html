@@ -1,126 +1,85 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Virtual</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-    <h1>Calculadora Virtual</h1>
+{% block title %}Calculadora | Universo de Alejo{% endblock %}
 
-    <input type="text" id="pantalla" readonly value="0">
-    <br><br>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculadora.css' %}">
+{% endblock %}
 
-    <button onclick="limpiar()">C</button>
-    <button onclick="presionar('/')">/</button>
-    <button onclick="presionar('*')">*</button>
-    <button onclick="presionar('-')">-</button>
-    <br><br>
+{% block content %}
+<section class="calculator" data-save-url="{% url 'guardar' %}" aria-labelledby="calculator-title">
+    <header class="calculator__heading">
+        <p class="calculator__eyebrow">Herramienta</p>
+        <h1 id="calculator-title">Calculadora</h1>
+        <p>Realiza una operación y consulta tus resultados recientes.</p>
+    </header>
 
-    <button onclick="presionar('7')">7</button>
-    <button onclick="presionar('8')">8</button>
-    <button onclick="presionar('9')">9</button>
-    <button onclick="presionar('+')">+</button>
-    <br><br>
+    <form hidden>{% csrf_token %}</form>
 
-    <button onclick="presionar('4')">4</button>
-    <button onclick="presionar('5')">5</button>
-    <button onclick="presionar('6')">6</button>
-    <br><br>
+    <div class="calculator__workspace">
+        <section class="calculator__panel" aria-label="Operaciones">
+            <label class="calculator__display-label" for="pantalla">Operación actual</label>
+            <input class="calculator__display" type="text" id="pantalla" readonly value="0" aria-live="polite">
 
-    <button onclick="presionar('1')">1</button>
-    <button onclick="presionar('2')">2</button>
-    <button onclick="presionar('3')">3</button>
-    <br><br>
+            <div class="calculator__keys" aria-label="Teclado de la calculadora">
+                <button class="calculator__key calculator__key--clear" type="button" data-action="clear" aria-label="Limpiar">C</button>
+                <button class="calculator__key calculator__key--operator" type="button" data-value="/" aria-label="Dividir">÷</button>
+                <button class="calculator__key calculator__key--operator" type="button" data-value="*" aria-label="Multiplicar">×</button>
+                <button class="calculator__key calculator__key--operator" type="button" data-value="-" aria-label="Restar">−</button>
 
-    <button onclick="presionar('0')">0</button>
-    <button onclick="presionar('.')">.</button>
-    <button onclick="calcular()">=</button>
+                <button class="calculator__key" type="button" data-value="7">7</button>
+                <button class="calculator__key" type="button" data-value="8">8</button>
+                <button class="calculator__key" type="button" data-value="9">9</button>
+                <button class="calculator__key calculator__key--operator calculator__key--tall" type="button" data-value="+" aria-label="Sumar">+</button>
 
-    <h2>Historial</h2>
-    <table border="1" cellpadding="6">
-        <thead>
-            <tr>
-                <th>Fecha y hora</th>
-                <th>Operación</th>
-                <th>Resultado</th>
-            </tr>
-        </thead>
-        <tbody id="historial-body">
-            {% for r in historial %}
-            <tr>
-                <td>{{ r.fecha|date:"d/m/Y H:i:s" }}</td>
-                <td>{{ r.operacion }}</td>
-                <td>{{ r.resultado|floatformat:"-4" }}</td>
-            </tr>
-            {% empty %}
-            <tr id="sin-datos">
-                <td colspan="3">Aún no hay cálculos</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <button class="calculator__key" type="button" data-value="4">4</button>
+                <button class="calculator__key" type="button" data-value="5">5</button>
+                <button class="calculator__key" type="button" data-value="6">6</button>
 
-    <script>
-        const pantalla = document.getElementById('pantalla');
+                <button class="calculator__key" type="button" data-value="1">1</button>
+                <button class="calculator__key" type="button" data-value="2">2</button>
+                <button class="calculator__key" type="button" data-value="3">3</button>
+                <button class="calculator__key calculator__key--wide" type="button" data-value="0">0</button>
+                <button class="calculator__key" type="button" data-value=".">.</button>
+                <button class="calculator__key calculator__key--equals" type="button" data-action="calculate" aria-label="Calcular resultado">=</button>
+            </div>
+        </section>
 
-        function presionar(valor) {
-            if (pantalla.value === '0' && !isNaN(valor)) {
-                pantalla.value = valor;
-            } else {
-                pantalla.value += valor;
-            }
-        }
+        <section class="calculator__history" aria-labelledby="history-title">
+            <div class="calculator__history-heading">
+                <p class="calculator__eyebrow">Registro</p>
+                <h2 id="history-title">Historial</h2>
+            </div>
+            <div class="calculator__table-wrap">
+                <table class="calculator__table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Fecha y hora</th>
+                            <th scope="col">Operación</th>
+                            <th scope="col">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historial-body">
+                        {% for r in historial %}
+                        <tr>
+                            <td>{{ r.fecha|date:"d/m/Y H:i:s" }}</td>
+                            <td>{{ r.operacion }}</td>
+                            <td>{{ r.resultado|floatformat:"-4" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr id="sin-datos">
+                            <td colspan="3">Aún no hay cálculos</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}
 
-        function limpiar() {
-            pantalla.value = '0';
-        }
-
-        function calcular() {
-            const operacion = pantalla.value;
-            try {
-                const resultado = Function('"use strict";return (' + operacion + ')')();
-                pantalla.value = resultado;
-                // Solo guarda si es un número válido y realmente hubo una operación
-                if (Number.isFinite(resultado) && operacion !== String(resultado)) {
-                    guardar(operacion, resultado);
-                }
-            } catch (error) {
-                pantalla.value = 'Error';
-            }
-        }
-
-        async function guardar(operacion, resultado) {
-            try {
-                const respuesta = await fetch('{% url "guardar" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({ operacion: operacion, resultado: resultado })
-                });
-                const datos = await respuesta.json();
-                if (datos.ok) {
-                    agregarFila(datos);
-                }
-            } catch (error) {
-                console.error('No se pudo guardar el resultado:', error);
-            }
-        }
-
-        function agregarFila(datos) {
-            const sinDatos = document.getElementById('sin-datos');
-            if (sinDatos) sinDatos.remove();
-
-            const tbody = document.getElementById('historial-body');
-            const fila = tbody.insertRow(0);
-            fila.insertCell().textContent = datos.fecha;
-            fila.insertCell().textContent = datos.operacion;
-            fila.insertCell().textContent = datos.resultado;
-        }
-    </script>
-
-</body>
-</html>
+{% block extra_js %}
+<script src="{% static 'calculadora/js/calculadora.js' %}" defer></script>
+{% endblock %}

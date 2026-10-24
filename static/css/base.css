@@ -1,291 +1,428 @@
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Montserrat:wght@400;500;600&display=swap');
+
+/*
+   CONFIGURACION GLOBAL DEL DISENO
+   Los colores y las fuentes se guardan como variables para poder cambiar
+   la identidad visual desde un solo lugar. Cambiar una variable actualiza
+   todos los componentes que la usan.
+*/
 :root {
-    color-scheme: light;
-    --color-ink: #202a26;
-    --color-muted: #63716b;
-    --color-paper: #f4f6f2;
-    --color-panel: #ffffff;
-    --color-brand: #17473d;
-    --color-brand-dark: #10362f;
-    --color-accent: #e36b4d;
-    --color-line: #d9e0da;
-    font-family: "Aptos", "Trebuchet MS", sans-serif;
+    /* Colores: fondos, texto principal y acentos del sitio. */
+    --color-arctic-powder: #F1F6F4;
+    --color-mystic-mint: #D9E8E2;
+    --color-forsythia: #FFC801;
+    --color-deep-saffron: #FF9932;
+    --color-nocturnal-expedition: #114C5A;
+    --color-oceanic-noir: #172B36;
+
+    /* Tipografias: Julius Sans One para titulos y Montserrat para lectura. */
+    --font-heading: 'Julius Sans One', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
 }
 
-* {
+/*
+    REINICIO Y BASE
+    Quita los margenes y rellenos que el navegador agrega por defecto.
+    Esto hace que el header pueda comenzar en el borde superior de la ventana.
+    box-sizing facilita calcular el tamano total de cada elemento, incluyendo
+    su borde y relleno.
+*/
+*, *::before, *::after {
     box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
     margin: 0;
-    background: var(--color-paper);
-    color: var(--color-ink);
+    padding: 0;
 }
 
+/*
+    PAGINA COMPLETA
+    El body usa una columna flexible de al menos toda la altura de la ventana.
+    El contenido central puede crecer y empujar el footer hacia abajo cuando
+    hay poco contenido. No fija ni hace flotar header o footer.
+*/
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--color-oceanic-noir);
+    color: var(--color-arctic-powder);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/*
+    FIGURA DECORATIVA DE FONDO
+    Se coloca en la esquina superior izquierda sin ocupar espacio del contenido.
+    width y height amplian o reducen la figura; clip-path recorta su forma.
+    pointer-events evita que esta decoracion bloquee clics.
+*/
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 360px;
+    height: 360px;
+    background-color: var(--color-forsythia);
+    clip-path: polygon(0 0, 100% 0, 85% 25%, 65% 45%, 40% 65%, 20% 90%, 0 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/*
+    ENLACES GENERALES
+    Heredan el color del elemento padre y eliminan el subrayado predeterminado.
+    La transicion suaviza los cambios de color y otros estados al pasar el mouse.
+*/
 a {
     color: inherit;
+    text-decoration: none;
+    transition: all 0.25s ease;
 }
 
-a:focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 4px;
-}
-
-.skip-link {
-    position: absolute;
-    z-index: 2;
-    top: 8px;
-    left: 8px;
-    padding: 10px 14px;
-    transform: translateY(-150%);
-    background: var(--color-panel);
-    color: var(--color-ink);
-}
-
-.skip-link:focus {
-    transform: translateY(0);
-}
-
+/*
+    HEADER: BARRA SUPERIOR
+    El header permanece en el flujo normal del documento: comienza arriba,
+    justo despues del borde de la pagina, y se desplaza junto con ella.
+    No usar position: sticky ni fixed si se desea que desaparezca al bajar.
+    z-index lo dibuja delante de la figura decorativa; la linea amarilla y la
+    sombra inferior separan visualmente el encabezado del contenido.
+*/
 .site-header {
-    background: var(--color-brand);
-    color: #ffffff;
+     position: relative;
+    z-index: 20;
+    width: 100%;
+    background-color: rgba(17, 76, 90, 0.35); /* Fondo diferenciado Nocturnal Expedition */
+    border-bottom: 2px solid var(--color-forsythia); /* Acento amarillo de separación */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
 }
 
+/*
+    CONTENEDOR DE NAVEGACION
+    Flex coloca marca y enlaces en una fila; space-between los separa hacia
+    los extremos. width limita el ancho y lo centra; height controla la altura
+    de la barra. Reducir height hace el header mas bajo.
+*/
 .navbar {
     display: flex;
-    width: min(1180px, calc(100% - 48px));
-    min-height: 72px;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    width: min(1180px, calc(100% - 64px));
+    height: 90px;
     margin: 0 auto;
 }
 
+/*
+    MARCA DEL SITIO
+    La tipografia geometrica y el texto en mayusculas dan protagonismo al nombre.
+    El color oscuro contrasta con la forma amarilla del fondo.
+*/
 .navbar__brand {
-    font-family: Georgia, serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.navbar__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-}
-
-.navbar__links a {
-    padding: 8px 0;
-    color: #edf4ef;
-    text-decoration: none;
-}
-
-.navbar__links a:hover {
-    color: #ffd1bd;
-}
-
-.site-layout {
-    display: grid;
-    width: min(1180px, calc(100% - 48px));
-    flex: 1;
-    grid-template-columns: 210px minmax(0, 1fr);
-    gap: 40px;
-    margin: 0 auto;
-    padding: 42px 0 56px;
-}
-
-.site-sidebar {
-    border-right: 1px solid var(--color-line);
-    padding: 8px 24px 0 0;
-}
-
-.sidebar h2 {
-    margin: 0 0 16px;
-    color: var(--color-muted);
-    font-size: 0.78rem;
-    font-weight: 700;
+    color: var(--color-oceanic-noir); /* Contraste sobre la mancha amarilla */
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 400;
     text-transform: uppercase;
 }
 
-.sidebar ul {
+/* Los enlaces del header forman una fila; aumentar gap los separa mas. */
+.navbar__links {
+    display: flex;
+    gap: 32px;
+}
+
+/*
+    ENLACES DEL HEADER
+    El tamano controla su escala; opacity los suaviza. En hover recuperan
+    intensidad y cambian a amarillo mediante la regla siguiente.
+*/
+.navbar__links a {
+    color: var(--color-arctic-powder);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+/* Estado al pasar el puntero: resalta el enlace con el color de acento. */
+.navbar__links a:hover {
+    color: var(--color-forsythia);
+    opacity: 1;
+}
+
+/*
+    DISTRIBUCION PRINCIPAL
+    Grid crea dos columnas: barra lateral de 240px y contenido flexible.
+    gap separa ambas columnas. flex: 1 permite que esta zona crezca en altura
+    y mantenga el footer abajo cuando la pagina tiene poco contenido.
+    width limita y centra el conjunto; padding agrega espacio interior arriba,
+    a los lados y abajo. Aumentar el primer valor baja visualmente el contenido,
+    no el header.
+*/
+.site-layout {
+    position: relative;
+    z-index: 5;
     display: grid;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
+    grid-template-columns: 240px 1fr;
+    gap: 50px;
+    flex: 1;
+    width: min(1180px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 48px 0 64px;
+}
+
+/*
+    PANEL LATERAL
+    fit-content hace que el panel mida lo necesario segun sus enlaces.
+    padding amplia el espacio interno; fondo, borde y radio lo distinguen
+    del fondo general sin hacerlo competir con el contenido principal.
+*/
+.site-sidebar {
+    height: fit-content;
+    padding: 24px 20px;
+    background-color: rgba(17, 76, 90, 0.2); /* Bloque visual independiente */
+    border: 1px solid rgba(217, 232, 226, 0.1);
+    border-radius: 12px;
+}
+
+/* Titulo del menu: pequeno y tenue para mantener la jerarquia visual. */
+.sidebar h2 {
+    margin-bottom: 20px;
+    color: var(--color-mystic-mint);
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* Lista vertical del menu; gap controla la separacion entre opciones. */
+.sidebar ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     list-style: none;
 }
 
+/*
+    ENLACES LATERALES
+    Se expanden a todo el ancho disponible. El padding crea espacio clicable;
+    el borde izquierdo queda transparente hasta el hover para evitar saltos.
+*/
 .sidebar a {
     display: block;
-    border-radius: 4px;
-    padding: 10px 12px;
-    color: var(--color-ink);
-    text-decoration: none;
+    padding: 8px 12px;
+    border-left: 2px solid transparent;
+    color: var(--color-arctic-powder);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    opacity: 0.8;
 }
 
+/*
+    HOVER DEL MENU LATERAL
+    El borde y fondo amarillos resaltan la opcion. padding-left aumenta el
+    espacio izquierdo y desplaza el texto un poco a la derecha al pasar el mouse.
+*/
 .sidebar a:hover {
-    background: #e5ece6;
-    color: var(--color-brand-dark);
+    border-left-color: var(--color-forsythia);
+    background-color: rgba(255, 200, 1, 0.05);
+    color: var(--color-forsythia);
+    opacity: 1;
+    padding-left: 16px;
 }
 
+/*
+    ZONA DEL CONTENIDO
+    Flex centra horizontalmente sus hijos. El centrado vertical no se fuerza,
+    asi la pagina puede crecer de forma natural cuando se agregue contenido.
+*/
 .site-main {
-    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Ancho maximo del bloque de bienvenida; centrar texto mejora su lectura. */
 .welcome {
-    max-width: 760px;
-    padding: 34px 0;
-    animation: welcome-in 420ms ease-out both;
+    max-width: 720px;
+    text-align: center;
 }
 
+/* Texto pequeno de categoria situado antes del titulo principal. */
 .welcome__eyebrow {
-    margin: 0 0 14px;
-    color: #a64731;
-    font-size: 0.82rem;
-    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--color-mystic-mint);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+/*
+    TITULO PRINCIPAL
+    Julius Sans One aporta el estilo geometrico ligero. font-size amplia o
+    reduce el titulo; line-height aumenta o comprime la distancia entre lineas.
+*/
+.welcome h1 {
+    color: var(--color-arctic-powder);
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.35;
     text-transform: uppercase;
 }
 
-.welcome h1 {
-    max-width: 680px;
-    margin: 0;
-    font-family: Georgia, serif;
-    font-size: 3rem;
-    font-weight: 500;
-    line-height: 1.12;
-}
-
+/*
+    PARRAFO PRINCIPAL
+    max-width evita lineas demasiado largas. Los margenes lo separan del titulo
+    y del boton; line-height amplia la distancia vertical para facilitar lectura.
+*/
 .welcome__intro {
-    max-width: 560px;
-    margin: 20px 0 28px;
-    color: var(--color-muted);
-    font-size: 1.12rem;
-    line-height: 1.7;
+    max-width: 620px;
+    margin: 24px auto 32px;
+    color: var(--color-mystic-mint);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
 }
 
+/*
+    BOTON PRINCIPAL
+    inline-flex mantiene el boton junto al texto y centra su etiqueta.
+    min-height controla su altura minima; padding horizontal lo amplia o estrecha.
+*/
 .button {
     display: inline-flex;
-    min-height: 46px;
+    min-height: 48px;
     align-items: center;
     justify-content: center;
+    padding: 0 24px;
+    border: 1px solid var(--color-forsythia);
     border-radius: 4px;
-    padding: 0 18px;
-    font-weight: 700;
-    text-decoration: none;
+    color: var(--color-arctic-powder);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.button--primary {
-    background: var(--color-accent);
-    color: #ffffff;
-}
-
+/* Al pasar el mouse, el boton se llena de amarillo y oscurece su texto. */
 .button--primary:hover {
-    background: #c95338;
+    background-color: var(--color-forsythia);
+    color: var(--color-oceanic-noir);
 }
 
+/*
+    PIE DE PAGINA
+    Permanece en el flujo normal y llega al fondo porque el body y el contenido
+    central son flexibles; no se fija sobre la pantalla. La sombra apunta hacia
+    arriba (valor vertical negativo) y la linea amarilla lo hace resaltar.
+*/
 .site-footer {
-    background: #e6ebe6;
+    position: relative;
+    z-index: 5;
+    border-top: 2px solid var(--color-forsythia);
+    background-color: rgba(17, 76, 90, 0.35);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.24);
 }
 
+/* Contenido del footer: fila centrada, con espacio entre texto y enlace. */
 .footer {
     display: flex;
-    width: min(1180px, calc(100% - 48px));
+    width: min(1180px, calc(100% - 64px));
     min-height: 72px;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 20px;
     margin: 0 auto;
-    color: var(--color-muted);
-    font-size: 0.9rem;
+    color: var(--color-mystic-mint);
+    font-size: 0.8rem;
 }
 
-.footer p {
-    margin: 0;
+/* El enlace legal se resalta en amarillo al pasar el puntero. */
+.footer a:hover {
+    color: var(--color-forsythia);
 }
 
-.footer a {
-    color: var(--color-brand-dark);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-}
-
-@keyframes welcome-in {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+/*
+   AJUSTES PARA PANTALLAS PEQUENAS
+   Estas reglas se activan hasta 720px de ancho. Reducen espacios y tamanos,
+   cambian las dos columnas a una sola y permiten que la navegacion se acomode
+   en varias filas en vez de desbordarse horizontalmente.
+*/
+@media (max-width: 720px) {
+    /* Reduce la decoracion para que no cubra demasiado contenido en movil. */
+    body::before {
+        width: 220px;
+        height: 220px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 700px) {
-    .navbar,
-    .site-layout,
-    .footer {
-        width: min(100% - 32px, 560px);
-    }
-
+    /* La barra puede aumentar de alto si marca y enlaces necesitan dos filas. */
     .navbar {
-        min-height: 64px;
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px 0;
-    }
-
-    .navbar__links {
-        gap: 18px;
-    }
-
-    .site-layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 24px;
-        padding: 24px 0 40px;
-    }
-
-    .site-sidebar {
-        border-right: 0;
-        border-bottom: 1px solid var(--color-line);
-        padding: 0 0 12px;
-    }
-
-    .sidebar h2 {
-        margin-bottom: 8px;
-    }
-
-    .sidebar ul {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .welcome {
-        padding: 8px 0 24px;
-    }
-
-    .welcome h1 {
-        font-size: 2.35rem;
-    }
-
-    .footer {
-        min-height: 72px;
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: center;
+        width: calc(100% - 40px);
+        height: auto;
+        min-height: 76px;
+        flex-wrap: wrap;
+        gap: 12px;
         padding: 16px 0;
     }
-}
 
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+    /* Reduce la marca para que quepa en una pantalla estrecha. */
+    .navbar__brand {
+        font-size: 0.85rem;
+    }
+
+    /* Reduce el espacio entre enlaces para evitar desbordamientos. */
+    .navbar__links {
+        gap: 16px;
+    }
+
+    /* Una sola columna: menu arriba y contenido debajo. */
+    .site-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        width: calc(100% - 40px);
+        padding: 28px 0 40px;
+    }
+
+    /* Reduce el espacio interior del panel lateral en movil. */
+    .site-sidebar {
+        padding: 18px;
+    }
+
+    /* Los enlaces laterales pasan a una fila que puede envolver. */
+    .sidebar ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    /* Reserva altura para el contenido principal sin estirar toda la pagina. */
+    .site-main {
+        min-height: 280px;
+    }
+
+    /* Reduce el titulo para que se acomode al ancho del telefono. */
+    .welcome h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Ajusta el texto de lectura a la pantalla estrecha. */
+    .welcome__intro {
+        font-size: 0.95rem;
+    }
+
+    /* Apila los elementos del footer y los alinea a la izquierda. */
+    .footer {
+        width: calc(100% - 40px);
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 16px 0;
     }
 }

@@ -1,0 +1,206 @@
+/* Limita el ancho del área de calculadora sin cambiar el marco general. */
+.calculator {
+    width: min(100%, 920px);
+    margin: 0 auto;
+}
+
+/* Encabezado propio de la herramienta, sin alterar la navegación global. */
+.calculator__heading {
+    margin-bottom: 28px;
+}
+
+.calculator__eyebrow {
+    margin-bottom: 8px;
+    color: var(--color-forsythia);
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+}
+
+.calculator__heading h1,
+.calculator__history h2 {
+    color: var(--color-arctic-powder);
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.calculator__heading > p:last-child {
+    margin-top: 8px;
+    color: var(--color-mystic-mint);
+    font-size: 0.9rem;
+}
+
+/*
+   Coloca teclado e historial en columnas separadas en pantallas amplias.
+   En pantallas pequenas se apilan para evitar que el contenido se estreche.
+*/
+.calculator__workspace {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(300px, 1.1fr);
+    align-items: start;
+    gap: 22px;
+}
+
+/* Panel propio del teclado: el padding crea aire y la sombra lo eleva visualmente. */
+.calculator__panel {
+    padding: 24px;
+    border: 1px solid rgba(217, 232, 226, 0.2);
+    border-radius: 10px;
+    background: rgba(17, 76, 90, 0.42);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+}
+
+/* Etiqueta pequeña encima de la pantalla para aclarar qué muestra. */
+.calculator__display-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-mystic-mint);
+    font-size: 0.75rem;
+}
+
+/* Pantalla alineada a la derecha como una calculadora física. */
+.calculator__display {
+    width: 100%;
+    min-height: 76px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(217, 232, 226, 0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: rgba(10, 31, 38, 0.78);
+    color: var(--color-arctic-powder);
+    font-family: var(--font-body);
+    font-size: 1.8rem;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+/* Distribuye todas las teclas en cuatro columnas de igual ancho. */
+.calculator__keys {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+/* Estilo de botón restringido a la calculadora; no toca botones de otras páginas. */
+.calculator .calculator__key {
+    min-height: 58px;
+    border: 1px solid rgba(217, 232, 226, 0.2);
+    border-radius: 6px;
+    background: rgba(23, 43, 54, 0.92);
+    color: var(--color-arctic-powder);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.calculator .calculator__key:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-forsythia);
+    background: rgba(255, 200, 1, 0.1);
+    color: var(--color-forsythia);
+}
+
+.calculator .calculator__key:focus-visible {
+    outline: 2px solid var(--color-forsythia);
+    outline-offset: 3px;
+}
+
+.calculator .calculator__key--operator {
+    color: var(--color-forsythia);
+}
+
+.calculator .calculator__key--clear {
+    border-color: rgba(255, 153, 50, 0.5);
+    color: #ffb36a;
+}
+
+.calculator .calculator__key--tall {
+    grid-row: span 2;
+}
+
+.calculator .calculator__key--wide {
+    grid-column: span 2;
+}
+
+.calculator .calculator__key--equals {
+    border-color: var(--color-forsythia);
+    background: var(--color-forsythia);
+    color: var(--color-oceanic-noir);
+    font-size: 1.35rem;
+}
+
+.calculator .calculator__key--equals:hover {
+    background: #ffd84d;
+    color: var(--color-oceanic-noir);
+}
+
+/* El historial tiene un panel independiente y permite desplazar tablas estrechas. */
+.calculator__history {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid rgba(217, 232, 226, 0.14);
+    border-radius: 10px;
+    background: rgba(17, 76, 90, 0.2);
+}
+
+.calculator__history-heading {
+    margin-bottom: 18px;
+}
+
+.calculator__history h2 {
+    font-size: 1.2rem;
+}
+
+.calculator__table-wrap {
+    overflow-x: auto;
+}
+
+.calculator__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    text-align: left;
+}
+
+.calculator__table th,
+.calculator__table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(217, 232, 226, 0.12);
+}
+
+.calculator__table th {
+    color: var(--color-forsythia);
+    font-weight: 500;
+}
+
+.calculator__table td {
+    color: var(--color-mystic-mint);
+}
+
+@media (max-width: 760px) {
+    .calculator__workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .calculator__heading h1 {
+        font-size: 1.45rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .calculator__panel,
+    .calculator__history {
+        padding: 16px;
+    }
+
+    .calculator__keys {
+        gap: 7px;
+    }
+
+    .calculator .calculator__key {
+        min-height: 52px;
+    }
+}
