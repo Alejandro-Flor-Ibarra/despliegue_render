@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'calculadora',
+    "base_datos",
+    'base_datos.app_PagoRepartidor_SeguimientoGeo.apps.AppPagorepartidorSeguimientogeoConfig',
 ]
 
 MIDDLEWARE = [

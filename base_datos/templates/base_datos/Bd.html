@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Base de datos del proyecto WaySmart{% endblock %}
+
+{% block content %}
+<section class="welcome" aria-labelledby="welcome-title">
+    <h1 id="welcome-title">Esta es la base de datos del proyecto WaySmart</h1>
+    <p class="welcome__intro">
+        Aquí podras ver todas las tablas de la base de datos del proyecto WaySmart.
+    </p>
+    <a class="button button--primary" href="{% url 'pago' %}">
+        Abrir repartidor
+    </a>
+</section>
+{% endblock %}
