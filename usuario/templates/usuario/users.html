@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuario/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="login-page" aria-labelledby="login-title">
+    <div class="login-card">
+        <p class="login-kicker">WAYSMART · ACCESO</p>
+        <h1 id="login-title">Qué bueno verte.</h1>
+        <p class="login-intro">Ingresa tus datos para continuar.</p>
+
+        <form class="login-form" method="post">
+            {% csrf_token %}
+
+            <label for="username">Usuario</label>
+            <input
+                id="username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                placeholder="Tu nombre de usuario"
+                required
+            >
+
+            <label for="password">Contraseña</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Tu contraseña"
+                required
+            >
+
+            <button class="login-submit" type="submit">Iniciar sesión</button>
+        </form>
+
+        <div class="register-panel">
+            <span>¿Aún no tienes una cuenta?</span>
+            <a class="register-button" href="{% url 'registro' %}">
+                Registrarse
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="login-aside" aria-hidden="true">
+        <span class="aside-mark">W</span>
+        <p>Todo tu trabajo,<br>en un solo lugar.</p>
+        <span class="aside-line"></span>
+    </div>
+</section>
+{% endblock %}

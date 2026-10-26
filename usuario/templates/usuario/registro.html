@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Crear cuenta{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuario/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="login-page" aria-labelledby="registro-title">
+    <div class="login-card">
+        <p class="login-kicker">WAYSMART · REGISTRO</p>
+        <h1 id="registro-title">Crea tu cuenta.</h1>
+        <p class="login-intro">Completa tus datos para registrarte.</p>
+
+        <form class="login-form" method="post">
+            {% csrf_token %}
+            {{ form.errors }}
+
+            <label for="nombres">Nombres</label>
+            <input id="nombres" name="nombres" type="text"
+                   autocomplete="given-name" required>
+
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" name="apellidos" type="text"
+                   autocomplete="family-name" required>
+
+            <label for="cedula">Cédula</label>
+            <input id="cedula" name="cedula" type="text"
+                   inputmode="numeric" autocomplete="off" required>
+
+            <label for="edad">Edad</label>
+            <input id="edad" name="edad" type="number"
+                   min="1" inputmode="numeric" required>
+
+            <label for="telefono">Número de teléfono</label>
+            <input id="telefono" name="telefono" type="tel"
+                   autocomplete="tel" required>
+
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" name="contrasena" type="password"
+                   autocomplete="new-password" required>
+
+            <button class="login-submit" type="submit">
+                Crear cuenta
+            </button>
+        </form>
+
+        <div class="register-panel">
+            <span>¿Ya tienes una cuenta?</span>
+            <a class="register-button" href="{% url 'users' %}">
+                Iniciar sesión
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="login-aside" aria-hidden="true">
+        <span class="aside-mark">W</span>
+        <p>Un espacio para<br>seguir avanzando.</p>
+        <span class="aside-line"></span>
+    </div>
+</section>
+{% endblock %}

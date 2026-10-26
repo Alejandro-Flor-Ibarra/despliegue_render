@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mi perfil{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuario/css/perfil.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="profile-page" aria-labelledby="profile-title">
+    <header class="profile-heading">
+        <p class="profile-eyebrow">WAYSMART · CUENTA</p>
+        <h1 id="profile-title">Mi perfil</h1>
+        <p>Consulta la información asociada a tu cuenta.</p>
+    </header>
+
+    <article class="profile-card">
+        <div class="profile-identity">
+            {% if perfil.foto_url %}
+                <img
+                    class="profile-photo"
+                    src="{{ perfil.foto_url }}"
+                    alt="Foto de {{ perfil.nombres }} {{ perfil.apellidos }}"
+                >
+            {% else %}
+                <div class="profile-photo profile-initials" aria-hidden="true">
+                    {{ perfil.nombres|first|upper }}{{ perfil.apellidos|first|upper }}
+                </div>
+            {% endif %}
+
+            <div>
+                <p class="profile-label">Usuario</p>
+                <h2>{{ perfil.nombres }} {{ perfil.apellidos }}</h2>
+                <p class="profile-id">Cédula: {{ perfil.cedula }}</p>
+            </div>
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <dl class="profile-details">
+            <div class="profile-detail">
+                <dt>Nombres</dt>
+                <dd>{{ perfil.nombres }}</dd>
+            </div>
+            <div class="profile-detail">
+                <dt>Apellidos</dt>
+                <dd>{{ perfil.apellidos }}</dd>
+            </div>
+            <div class="profile-detail">
+                <dt>Cédula</dt>
+                <dd>{{ perfil.cedula }}</dd>
+            </div>
+            <div class="profile-detail">
+                <dt>Edad</dt>
+                <dd>{{ perfil.edad }}</dd>
+            </div>
+            <div class="profile-detail">
+                <dt>Número de teléfono</dt>
+                <dd>{{ perfil.telefono }}</dd>
+            </div>
+            <div class="profile-detail">
+                <dt>Inicio de sesión</dt>
+                <dd>Con tu cédula</dd>
+            </div>
+        </dl>
+
+        <p class="profile-security-note">
+            Por seguridad, tu contraseña no se muestra en el perfil.
+        </p>
+    </article>
+</section>
+{% endblock %}

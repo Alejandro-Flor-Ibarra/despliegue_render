@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'calculadora',
     "base_datos",
     'base_datos.app_PagoRepartidor_SeguimientoGeo.apps.AppPagorepartidorSeguimientogeoConfig',
+    'base_datos.app_PagosEntrega_TipoPago',
+    'usuario',
 ]
 
 MIDDLEWARE = [

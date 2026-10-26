@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('calculadora/', include('calculadora.urls')),
     path('basedatos/', include('base_datos.urls')),
+    path('usuario/', include('usuario.urls')),
 ]
