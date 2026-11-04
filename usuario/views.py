@@ -9,8 +9,27 @@ from bson.errors import InvalidId
 from .services.mongo_users import buscar_usuario_por_id
 
 
+from .services.mongo_users import buscar_usuario_por_nombres
+
+
 
 def users(request):
+    if request.method == "POST":
+        nombres = request.POST.get("username", "").strip()
+        contrasena = request.POST.get("password", "")
+
+        try:
+            usuario = buscar_usuario_por_nombres(nombres)
+        except PyMongoError:
+            messages.error(request, "No se pudo conectar con MongoDB.")
+            return render(request, "usuario/users.html")
+
+        if usuario and contrasena == usuario.get("contrasena"):
+            request.session["usuario_id"] = str(usuario["_id"])
+            return redirect("perfil")
+
+        messages.error(request, "Nombre o contraseña incorrectos.")
+
     return render(request, "usuario/users.html")
 
 

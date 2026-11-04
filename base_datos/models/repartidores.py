@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Pagos_repartidor(models.Model):
     ESTADO_CHOICES = [

@@ -40,7 +40,7 @@ def crear_usuario(datos):
         "cedula": datos["cedula"],
         "edad": datos["edad"],
         "telefono": datos["telefono"],
-        "contrasena": make_password(datos["contrasena"]),
+        "contrasena": (datos["contrasena"]),
     }
 
     return obtener_coleccion_usuarios().insert_one(documento)
@@ -50,3 +50,6 @@ def buscar_usuario_por_id(usuario_id):
         {"_id": ObjectId(usuario_id)},
         {"contrasena": 0},
     )
+
+def buscar_usuario_por_nombres(nombres):
+    return obtener_coleccion_usuarios().find_one({"nombres": nombres})
