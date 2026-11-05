@@ -7,6 +7,8 @@ urlpatterns = [
     path("", views.users, name="login"),
     path("registro/", views.registro, name="registro"),
     path("perfil/", views.perfil, name="perfil"),
+
+
     path("pagos-repartidor/", views.pagos_repartidor, name="pagos_repartidor"),
     path(
         "pagos-repartidor/<int:pk>/",
@@ -30,4 +32,9 @@ urlpatterns = [
         name="eliminar_seguimiento",
     ),
     path("pagos-entrega/", views.pagos_entrega, name="pagos_entrega"),
+    path(
+        "pagos-entrega/nuevo/<str:metodo>/",
+        views.nuevo_pago_entrega,
+        name="nuevo_pago_entrega",
+    ),
 ]

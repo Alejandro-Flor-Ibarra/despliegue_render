@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from pymongo.errors import DuplicateKeyError, PyMongoError
+from django.http import Http404
 
 from bson.errors import InvalidId
 from .forms import (
@@ -9,9 +10,9 @@ from .forms import (
     PagoRepartidorForm,
     RegistroForm,
     SeguimientoGeolocalizacionForm,
-    TipoPagoForm,
+    
 )
-from .models import PagoEntrega, PagoRepartidor, SeguimientoGeolocalizacion, TipoPago
+from .models import PagoEntrega, PagoRepartidor, SeguimientoGeolocalizacion
 from .services.mongo_users import (
     buscar_usuario_por_id,
     buscar_usuario_por_nombres,
@@ -135,32 +136,36 @@ def eliminar_seguimiento(request, pk):
     messages.success(request, "Seguimiento eliminado correctamente.")
     return redirect("usuarios:seguimientos")
 
-
 def pagos_entrega(request):
-    tipo_form = TipoPagoForm()
-    pago_form = PagoEntregaForm()
-
-    if request.method == "POST":
-        if "btn_tipo_pago" in request.POST:
-            tipo_form = TipoPagoForm(request.POST)
-            if tipo_form.is_valid():
-                tipo_form.save()
-                messages.success(request, "Tipo de pago registrado.")
-                return redirect("usuarios:pagos_entrega")
-        elif "btn_pago_entrega" in request.POST:
-            pago_form = PagoEntregaForm(request.POST)
-            if pago_form.is_valid():
-                pago_form.save()
-                messages.success(request, "Pago de entrega registrado.")
-                return redirect("usuarios:pagos_entrega")
-
+    pagos = PagoEntrega.objects.order_by("-fecha_de_pago")
     return render(
         request,
         "usuarios/pagos_entrega.html",
+        {"pagos": pagos},
+    )
+
+
+def nuevo_pago_entrega(request, metodo):
+    metodos_validos = dict(PagoEntrega.METODO_CHOICES)
+    metodo = metodo.upper()
+
+    if metodo not in metodos_validos:
+        raise Http404("Método de pago no válido.")
+
+    form = PagoEntregaForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        pago = form.save(commit=False)
+        pago.metodo_pago = metodo
+        pago.save()
+        messages.success(request, "Pago registrado correctamente.")
+        return redirect("usuarios:pagos_entrega")
+
+    return render(
+        request,
+        "usuarios/pago_entrega_form.html",
         {
-            "tipo_form": tipo_form,
-            "pago_form": pago_form,
-            "tipos_pago": TipoPago.objects.all(),
-            "pagos": PagoEntrega.objects.select_related("tipo_de_pago"),
+            "form": form,
+            "metodo": metodos_validos[metodo],
         },
     )

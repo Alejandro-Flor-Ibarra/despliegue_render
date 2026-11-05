@@ -4,7 +4,7 @@ from .models import (
     PagoEntrega,
     PagoRepartidor,
     SeguimientoGeolocalizacion,
-    TipoPago,
+    
 )
 
 
@@ -20,12 +20,6 @@ class RegistroForm(forms.Form):
     )
 
 
-class TipoPagoForm(forms.ModelForm):
-    class Meta:
-        model = TipoPago
-        fields = ["efectivo", "transferencia"]
-
-
 class PagoEntregaForm(forms.ModelForm):
     fecha_de_pago = forms.DateTimeField(
         input_formats=["%Y-%m-%dT%H:%M"],
@@ -37,14 +31,8 @@ class PagoEntregaForm(forms.ModelForm):
 
     class Meta:
         model = PagoEntrega
-        fields = [
-            "tipo_de_pago",
-            "valor_total",
-            "metodo_pago",
-            "evidencia_url",
-            "fecha_de_pago",
-            "estado",
-        ]
+        fields = ["valor_total", "fecha_de_pago", "evidencia_url", "estado"]
+
 
 
 class PagoRepartidorForm(forms.ModelForm):
