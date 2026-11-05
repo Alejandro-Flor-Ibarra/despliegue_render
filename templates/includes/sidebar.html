@@ -4,8 +4,14 @@
     <ul>
         <li><a href="{% url 'home' %}">Inicio</a></li>
         <li><a href="{% url 'index' %}">Calculadora</a></li>
-        <li><a href="{% url 'base_datos' %}">Base de datos</a></li>
-        <li><a href="{% url 'users' %}">Inicia sesión</a></li>
-        
+        <li><a href="{% url 'usuarios:pagos_entrega' %}">Pagos de entrega</a></li>
+        <li><a href="{% url 'usuarios:pagos_repartidor' %}">Pagos de repartidor</a></li>
+        <li><a href="{% url 'usuarios:seguimientos' %}">Seguimiento</a></li>
+        {% if request.session.usuario_id %}
+            <li><a href="{% url 'usuarios:perfil' %}">Mi perfil</a></li>
+        {% else %}
+            <li><a href="{% url 'usuarios:login' %}">Iniciar sesión</a></li>
+            <li><a href="{% url 'usuarios:registro' %}">Registro</a></li>
+        {% endif %}
     </ul>
 </nav>

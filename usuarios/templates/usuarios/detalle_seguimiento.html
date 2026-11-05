@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle del seguimiento{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuarios/css/seguimiento.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Detalle del seguimiento</h1>
+
+        <div class="tarjeta">
+            <p>ID del seguimiento: {{ seguimiento.pk }}</p>
+            <p>Repartidor: {{ seguimiento.id_repartidor }}</p>
+            <p>Latitud: {{ seguimiento.latitud }}</p>
+            <p>Longitud: {{ seguimiento.longitud }}</p>
+            <p>Velocidad: {{ seguimiento.velocidad }} km/h</p>
+            <p>Fecha y hora: {{ seguimiento.timestamp }}</p>
+
+            <a href="{% url 'usuarios:seguimientos' %}" class="btn">
+                Volver
+            </a>
+        </div>
+    </div>
+{% endblock %}

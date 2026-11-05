@@ -46,10 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'calculadora',
-    "base_datos",
-    'base_datos.app_PagoRepartidor_SeguimientoGeo.apps.AppPagorepartidorSeguimientogeoConfig',
-    'base_datos.app_PagosEntrega_TipoPago',
-    'usuario',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'America/Bogota'
 

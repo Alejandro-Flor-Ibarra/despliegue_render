@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Seguimiento geográfico{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuarios/css/seguimiento.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <h1>Seguimientos de Geolocalización</h1>
+
+        <form method="post" class="card">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Registrar ubicación</button>
+        </form>
+
+        {% if seguimientos %}
+
+            {% for seguimiento in seguimientos %}
+
+                <div class="tarjeta">
+
+                    <h2>Repartidor ID: {{ seguimiento.id_repartidor }}</h2>
+
+                    <div class="info">
+
+                        <p>
+                            <strong>ID Seguimiento:</strong>
+                            {{ seguimiento.pk }}
+                        </p>
+
+                        <p>
+                            <strong>Latitud:</strong>
+                            {{ seguimiento.latitud }}
+                        </p>
+
+                        <p>
+                            <strong>Longitud:</strong>
+                            {{ seguimiento.longitud }}
+                        </p>
+
+                        <p>
+                            <strong>Velocidad:</strong>
+                            {{ seguimiento.velocidad }} km/h
+                        </p>
+
+                        <p>
+                            <strong>Fecha/Hora:</strong>
+                            {{ seguimiento.timestamp }}
+                        </p>
+
+                    </div>
+
+                    <div class="acciones">
+
+                        <a
+                            href="{% url 'usuarios:detalle_seguimiento' seguimiento.pk %}"
+                            class="btn"
+                        >
+                            Ver detalle
+                        </a>
+
+                        <form
+                            action="{% url 'usuarios:eliminar_seguimiento' seguimiento.pk %}"
+                            method="post"
+                            style="display: inline;"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-eliminar">
+                                Eliminar
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="mensaje">
+                <p>No hay seguimientos disponibles.</p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

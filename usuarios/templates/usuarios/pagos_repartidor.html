@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pagos del repartidor{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuarios/css/seguimiento.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <h1>Pagos del repartidor</h1>
+
+        <form method="post" class="card">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Registrar pago</button>
+        </form>
+
+        {% if pagos %}
+
+            {% for pago in pagos %}
+
+                <div class="tarjeta">
+
+                        <h2>Repartidor ID: {{ pago.id_repartidor }}</h2>
+
+                    <div class="info">
+                            <p>ID del pago: {{ pago.pk }}</p>
+                            <p>Repartidor: {{ pago.id_repartidor }}</p>
+                            <p>Total generado: ${{ pago.monto_total_generado }}</p>
+                            <p>Comisión: ${{ pago.comision_plataforma }}</p>
+                            <p>Monto neto: ${{ pago.monto_neto }}</p>
+                            <p>Fecha: {{ pago.fecha_pago }}</p>
+                            <p>Estado: {{ pago.estado }}</p>
+                    </div>
+
+                    <div class="acciones">
+
+                        <!-- Nota: Ajusta los nombres de las URLs en tus rutas si usas detalle o eliminar -->
+                        <a href="{% url 'usuarios:detalle_pago_repartidor' pago.pk %}" class="btn">
+                            Ver detalle
+                        </a>
+
+                        <form
+                            action="{% url 'usuarios:eliminar_pago_repartidor' pago.pk %}"
+                            method="post"
+                            style="display: inline;"
+                        >
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="mensaje">
+                <p>No hay pagos registrados.</p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

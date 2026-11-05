@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle del pago{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuarios/css/seguimiento.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Detalle del pago</h1>
+
+        <div class="tarjeta">
+            <p>ID del pago: {{ pago.pk }}</p>
+            <p>Repartidor: {{ pago.id_repartidor }}</p>
+            <p>Total generado: ${{ pago.monto_total_generado }}</p>
+            <p>Comisión: ${{ pago.comision_plataforma }}</p>
+            <p>Monto neto: ${{ pago.monto_neto }}</p>
+            <p>Fecha: {{ pago.fecha_pago }}</p>
+            <p>Estado: {{ pago.estado }}</p>
+
+            <a href="{% url 'usuarios:pagos_repartidor' %}" class="btn">
+                Volver
+            </a>
+        </div>
+    </div>
+{% endblock %}
