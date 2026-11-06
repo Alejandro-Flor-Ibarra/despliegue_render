@@ -69,7 +69,10 @@ class PagoEntrega(models.Model):
     evidencia_url = models.URLField(
         "URL de la evidencia", max_length=255, null=True, blank=True
     )
-    fecha_de_pago = models.DateTimeField("fecha de pago")
+    fecha_de_pago = models.DateTimeField(
+        "fecha de pago",
+        auto_now_add=True,
+    )
     estado = models.CharField("estado", max_length=50, choices=ESTADO_CHOICES)
 
     class Meta:

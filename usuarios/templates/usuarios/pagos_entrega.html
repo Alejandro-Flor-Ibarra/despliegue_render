@@ -8,60 +8,87 @@
 {% endblock %}
 
 {% block content %}
+<div class="payment-page">
+    <h1 class="payment-page__title">Pagos de entrega</h1>
 
-<div class="container">
-    <h1 class="header-title">Módulo de Pagos y Formas de Pago</h1>
+    {% if pagos %}
+        <section class="payment-card" aria-labelledby="payments-title">
+            <h2 class="payment-card__title" id="payments-title">
+                Historial de pagos
+            </h2>
 
-<h1>Registrar pago de entrega</h1>
+            <details>
+                <summary>Agregar pago</summary>
+                <div class="payment-methods">
+                    <a
+                        class="payment-method"
+                        href="{% url 'usuarios:nuevo_pago_entrega' 'EFECTIVO' %}"
+                    >
+                        Pago en efectivo
+                    </a>
+                    <a
+                        class="payment-method"
+                        href="{% url 'usuarios:nuevo_pago_entrega' 'TRANSFERENCIA' %}"
+                    >
+                        Pago por transferencia
+                    </a>
+                </div>
+            </details>
 
-<div class="payment-methods">
-    <a class="btn btn-waysmart"
-       href="{% url 'usuarios:nuevo_pago_entrega' 'EFECTIVO' %}">
-        Pago en efectivo
-    </a>
+            <div class="payment-table-wrap">
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Método</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                            <tr>
+                                <td>{{ pago.pk }}</td>
+                                <td>{{ pago.valor_total }}</td>
+                                <td>{{ pago.get_metodo_pago_display }}</td>
+                                <td>{{ pago.fecha_de_pago|date:"d/m/Y H:i" }}</td>
+                                <td>{{ pago.get_estado_display }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% else %}
+        <section class="payment-card payment-empty" aria-labelledby="empty-payments-title">
+            <h2 class="payment-card__title" id="empty-payments-title">
+                Todavía no hay pagos
+            </h2>
+            <p>Cuando registres un pago, aparecerá aquí.</p>
 
-    <a class="btn btn-waysmart"
-       href="{% url 'usuarios:nuevo_pago_entrega' 'TRANSFERENCIA' %}">
-        Pago por transferencia
-    </a>
-</div>
-
-    
-
-    <section class="card" aria-labelledby="payments-title">
-        <h2 class="card-title" id="payments-title">Pagos registrados</h2>
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Total</th>
-                        <th>Método</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pago in pagos %}
-                    <tr>
-                        <td>{{ pago.pk }}</td>
-                        
-                        <td>{{ pago.valor_total }}</td>
-                        <td>{{ pago.get_metodo_pago_display }}</td>
-                        <td>{{ pago.fecha_de_pago }}</td>
-                        <td>{{ pago.get_estado_display }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="6">Aún no hay pagos registrados.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </section>
+            <details>
+                <summary>Empezar</summary>
+                <div class="payment-methods">
+                    <a
+                        class="payment-method"
+                        href="{% url 'usuarios:nuevo_pago_entrega' 'EFECTIVO' %}"
+                    >
+                        Pago en efectivo
+                    </a>
+                    <a
+                        class="payment-method"
+                        href="{% url 'usuarios:nuevo_pago_entrega' 'TRANSFERENCIA' %}"
+                    >
+                        Pago por transferencia
+                    </a>
+                </div>
+            </details>
+        </section>
+    {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'usuarios/js/pagos_entrega.js' %}"></script>
+<script src="{% static 'usuarios/js/pagos_entrega.js' %}" defer></script>
 {% endblock %}

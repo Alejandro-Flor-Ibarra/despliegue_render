@@ -1,136 +1,225 @@
-:root {
-    --waysmart-primary: #2563eb;
-    --waysmart-primary-hover: #1d4ed8;
-    --waysmart-dark: #0f172a;
-    --waysmart-dark-light: #1e293b;
-    --waysmart-bg: #f8fafc;
-    --waysmart-card-bg: #ffffff;
-    --waysmart-border: #e2e8f0;
-    --waysmart-text: #334155;
-    --waysmart-text-muted: #64748b;
-    --waysmart-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+.payment-page {
+    --payment-ink: var(--color-oceanic-noir, #172B36);
+    --payment-teal: var(--color-nocturnal-expedition, #114C5A);
+    --payment-paper: var(--color-arctic-powder, #F1F6F4);
+    --payment-mint: var(--color-mystic-mint, #D9E8E2);
+    --payment-yellow: var(--color-forsythia, #FFC801);
+
+    width: min(920px, 100%);
+    margin: 48px auto;
+    color: var(--payment-ink);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-}
-
-body {
-    background-color: var(--waysmart-bg);
-    color: var(--waysmart-text);
-    padding: 30px 20px;
-    line-height: 1.5;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.header-title {
-    font-size: 1.85rem;
-    font-weight: 700;
-    color: var(--waysmart-dark);
+.payment-page__title {
     margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--waysmart-primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--payment-paper);
+    font-family: var(--font-heading, sans-serif);
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    font-weight: 400;
+    text-transform: uppercase;
 }
 
-.card {
-    background-color: var(--waysmart-card-bg);
-    border: 1px solid var(--waysmart-border);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: var(--waysmart-shadow);
+.payment-card {
+    padding: clamp(24px, 5vw, 48px);
+    border: 1px solid rgba(241, 246, 244, 0.18);
+    border-radius: 18px;
+    background: var(--payment-paper);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--waysmart-dark-light);
+.payment-card__title {
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    border-left: 4px solid var(--waysmart-primary);
-    padding-left: 10px;
+    color: var(--payment-ink);
+    font-family: var(--font-heading, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    text-transform: uppercase;
 }
 
-.form-grid {
+.payment-page p {
+    color: #52636a;
+}
+
+.payment-page details {
+    margin: 18px 0 24px;
+}
+
+.payment-page summary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-radius: 8px;
+    background: var(--payment-teal);
+    color: var(--payment-paper);
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.payment-page summary::-webkit-details-marker {
+    display: none;
+}
+
+.payment-page summary:hover {
+    transform: translateY(-2px);
+    background: var(--payment-ink);
+}
+
+.payment-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.payment-method {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--payment-yellow);
+    color: var(--payment-ink);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.payment-method:hover {
+    transform: translateY(-2px);
+    background: #ffd84d;
+}
+
+.payment-table-wrap {
+    overflow-x: auto;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--payment-ink);
+    text-align: left;
+}
+
+.payment-table th,
+.payment-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(17, 76, 90, 0.16);
+}
+
+.payment-table th {
+    color: var(--payment-teal);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+}
+
+.payment-empty {
+    padding: 30px;
+    border-left: 5px solid var(--payment-yellow);
+    border-radius: 8px;
+    background: rgba(217, 232, 226, 0.5);
+}
+
+.payment-empty p {
+    margin: 10px 0 18px;
+}
+
+.payment-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
+.payment-form p {
+    display: grid;
+    gap: 6px;
 }
 
-.form-group.full-width {
-    grid-column: 1 / -1;
-}
-
-label {
-    font-size: 0.875rem;
+.payment-form label {
+    color: var(--payment-ink);
+    font-size: 0.9rem;
     font-weight: 600;
-    color: var(--waysmart-text);
-    margin-bottom: 6px;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="datetime-local"],
-select {
+.payment-form input,
+.payment-form select {
     width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--waysmart-border);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: var(--waysmart-dark);
-    background-color: #fff;
-    outline: none;
-    transition: all 0.2s ease-in-out;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #bacbc6;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--payment-ink);
+    font: inherit;
 }
 
-input:focus,
-select:focus {
-    border-color: var(--waysmart-primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+.payment-form input:focus,
+.payment-form select:focus {
+    border-color: var(--payment-teal);
+    outline: 3px solid rgba(17, 76, 90, 0.15);
 }
 
-.btn-container {
-    margin-top: 8px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.btn {
-    padding: 10px 22px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
+.payment-submit {
+    min-height: 50px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--payment-teal);
+    color: var(--payment-paper);
+    font: inherit;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: transform 180ms ease, background 180ms ease;
 }
 
-.btn-waysmart {
-    background-color: var(--waysmart-primary);
-    color: #ffffff;
+.payment-submit:hover {
+    transform: translateY(-2px);
+    background: var(--payment-ink);
 }
 
-.btn-waysmart:hover {
-    background-color: var(--waysmart-primary-hover);
+.payment-back {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--payment-teal);
+    font-weight: 600;
+    text-decoration-color: var(--payment-yellow);
+    text-underline-offset: 4px;
 }
 
-.btn-waysmart:active {
-    transform: scale(0.98);
+.payment-page :focus-visible {
+    outline: 3px solid var(--payment-yellow);
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .payment-page {
+        margin: 24px auto;
+    }
+
+    .payment-table th,
+    .payment-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+
+    .payment-methods {
+        flex-direction: column;
+    }
+
+    .payment-method {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-page summary,
+    .payment-method,
+    .payment-submit {
+        transition: none;
+    }
 }

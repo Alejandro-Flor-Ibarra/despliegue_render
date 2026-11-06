@@ -6,8 +6,6 @@ from .models import (
     SeguimientoGeolocalizacion,
     
 )
-
-
 class RegistroForm(forms.Form):
     nombres = forms.CharField(max_length=100)
     apellidos = forms.CharField(max_length=100)
@@ -18,22 +16,11 @@ class RegistroForm(forms.Form):
         max_length=128,
         widget=forms.PasswordInput,
     )
-
-
 class PagoEntregaForm(forms.ModelForm):
-    fecha_de_pago = forms.DateTimeField(
-        input_formats=["%Y-%m-%dT%H:%M"],
-        widget=forms.DateTimeInput(
-            attrs={"type": "datetime-local"},
-            format="%Y-%m-%dT%H:%M",
-        ),
-    )
 
     class Meta:
         model = PagoEntrega
-        fields = ["valor_total", "fecha_de_pago", "evidencia_url", "estado"]
-
-
+        fields = ["valor_total", "evidencia_url", "estado"]
 
 class PagoRepartidorForm(forms.ModelForm):
     class Meta:
@@ -45,7 +32,6 @@ class PagoRepartidorForm(forms.ModelForm):
             "monto_neto",
             "estado",
         ]
-
 
 class SeguimientoGeolocalizacionForm(forms.ModelForm):
     class Meta:

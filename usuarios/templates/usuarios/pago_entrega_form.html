@@ -1,20 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'usuarios/css/pagos_entrega.css' %}">
+{% endblock %}
+
+
 
 {% block title %}Registrar pago{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Registrar pago: {{ metodo }}</h1>
+<div class="payment-page">
+    <h1 class="payment-page__title">Registrar pago</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <section class="payment-card" aria-labelledby="payment-form-title">
+        <h2 class="payment-card__title" id="payment-form-title">
+            Pago por {{ metodo }}
+        </h2>
 
-        <button type="submit" class="btn btn-waysmart">
-            Guardar pago
-        </button>
-    </form>
+        <p>Completa los datos para registrar este pago.</p>
 
-    <a href="{% url 'usuarios:pagos_entrega' %}">Volver a métodos de pago</a>
+        <form method="post" class="payment-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="payment-submit">
+                Guardar pago
+            </button>
+        </form>
+
+        <a class="payment-back" href="{% url 'usuarios:pagos_entrega' %}">
+            Volver a pagos de entrega
+        </a>
+    </section>
 </div>
 {% endblock %}
